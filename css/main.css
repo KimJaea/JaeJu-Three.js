@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    width: 0;
+    height: 0;
+	font-size: 13px;
+	line-height: 24px;
+	color: #ffffff;
+	overscroll-behavior: none;
+    font-family: 'Song Myung';
+}
+
+#menu {
+	width: 200px;
+	height: 500px;
+
+	padding-top: 80px;
+	font-size: 30px;
+	line-height: 30px;
+	color: #ffffff;
+	
+	text-align: center;
+	position: absolute;
+	box-sizing: border-box;
+	display: inline;
+}
+/* Talk to ChatBot */
+#button1 {
+	width: 180px;
+	height: 80px;
+	background-color: #165ba6;
+	margin-top: 4px;
+	margin-left: 10px;
+	border-radius: 30px;
+
+
+}
+/* Suggest Hospital */	
+#button2 {
+	width: 180px;
+	height: 80px;
+	background-color: #1aad21;
+	margin-top: 4px;
+	margin-left: 10px;
+	border-radius: 30px;
+
+	
+}
+/* Talk to ChatBot */
+#button3 {
+	width: 180px;
+	height: 80px;
+	background-color: #fc721c;
+	margin-top: 4px;
+	margin-left: 10px;
+	border-radius: 30px;
+
+	
+}
+/* Show Chart */	
+#button4 {
+	width: 180px;
+	height: 80px;
+	background-color: #ff369e;
+	margin-top: 4px;
+	margin-left: 10px;
+	border-radius: 30px;
+
+	
+}
+
+#info {
+    width: 100%;
+    height: 100%;
+	font-size: 30px;
+	line-height: 30px;
+	color: #ffffff;
+	overscroll-behavior: none;
+	position: absolute;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	display:block;
+	z-index: 1;
+}
