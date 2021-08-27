@@ -181,12 +181,12 @@ function loadModel() {
 		gltf.scene.position.set(0, 12, 0)
 		scene.add(gltf.scene);
 	})
-	// TEST BOX
-	const geometry = new THREE.BoxGeometry(1, 1, 1)
-	const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-	const boxMesh = new THREE.Mesh(geometry, material)
-	boxMesh.position.set(-48, 0, -48)
-	scene.add(boxMesh)
+	// // TEST BOX
+	// const geometry = new THREE.BoxGeometry(1, 1, 1)
+	// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+	// const boxMesh = new THREE.Mesh(geometry, material)
+	// boxMesh.position.set(-48, 0, -48)
+	// scene.add(boxMesh)
 }
 
 function moveModel() {

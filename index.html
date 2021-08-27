@@ -11,22 +11,30 @@
 	</head>
 	<script language='javascript'>
 		function btn1 () {
-			//alert("1누름");
+			//alert("button1");
 		}
 	</script>
 	<body>
-		<!-- TEST-->
-		<!--
-		<div id="info"><br/><br/>
-			<br/>Click and Drag to See Around!
-			<br/>If you want to do something more, click a button!
-		</div>
-		
-		<a href="https://www.google.com/">
-			Go to Google
-		</a>
-		-->
-
+		<script>!(function () {
+			let e = document.createElement("script"),
+			t = document.head || document.getElementsByTagName("head")[0];
+			(e.src = "https://cdn.jsdelivr.net/npm/rasa-webchat/lib/index.js"),
+			(e.async = !0),
+			(e.onload = () => {
+				window.WebChat.default(
+				{
+					initPayload: '/greet',
+					customData: { language: "kr" },
+					socketUrl: "http://localhost:5005",
+					title: "JaeJu Bot",
+					subtitle: "재주봇과 심리상담을 진행해 보세요."
+				},
+				null
+				);
+			}),
+			t.insertBefore(e, t.firstChild);
+		})();
+		</script>
 		<div id="menu">
 			Buttons
 			<div id="button1" type="button" onclick="btn1();">

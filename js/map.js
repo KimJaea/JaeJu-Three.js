@@ -1,4 +1,4 @@
-/* Get Current Location*/
+/* Get Current Location */
 window.onload = getLocation; 
 function getLocation(){
     if(navigator.geolocation){

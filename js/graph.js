@@ -1,19 +1,7 @@
-// import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js'
 import * as THREE from '../three.js-master/build/three.module.js'
 import {GLTFLoader} from '../three.js-master/examples/jsm/loaders/GLTFLoader.js'
 import {OrbitControls} from '../three.js-master/examples/jsm/controls/OrbitControls.js'
 import Stats from '../three.js-master/examples/jsm/libs/stats.module.js'
-
-import {FBXLoader} from '../three.js-master/examples/jsm/loaders/FBXLoader.js'
-import {DRACOLoader} from '../three.js-master/examples/jsm/loaders/DRACOLoader.js'
-import vShader from '../shaders/vertexShader.glsl.js'
-import fShader from '../shaders/fragmentShader.glsl.js'
-// import * as THREE from 'https://cdn.skypack.dev/three@0127.0'
-// import {GLTFLoader} from 'https://unpkg.com/three/examples/jsm/loaders/GLTFLoader.js'
-// import {FBXLoader} from 'https://unpkg.com/three/examples/jsm/loaders/FBXLoader.js'
-// import {DRACOLoader} from 'https://unpkg.com/three/examples/jsm/loaders/DRACOLoader.js'
-// import {OrbitControls} from 'https://unpkg.com/three/examples/jsm/controls/OrbitControls.js'
-// import Stats from 'https://unpkg.com/three/examples/jsm/libs/stats.module.js'
 
 var container, stats, controls, mixer, clock;
 var camera, scene, renderer, canvas;
