@@ -80,22 +80,19 @@ function init() {
 	const btn1 = document.querySelector('#button1');
 	btn1.addEventListener('click', () => {
 		camera.position.set(-30, 50, -60);
-		window.open("http://127.0.0.1:5500/page1.html", "page")
 	})
 	const btn2 = document.querySelector('#button2');
 	btn2.addEventListener('click', () => {
 		camera.position.set(-60, 50, -60);
-		window.open("http://127.0.0.1:5500/page4.html", "page")
 	})
 	const btn3 = document.querySelector('#button3');
 	btn3.addEventListener('click', () => {
 		camera.position.set(-60, 50, -30);
-		window.open("http://127.0.0.1:5500/page2.html", "page")
 	})
 	const btn4 = document.querySelector('#button4');
 	btn4.addEventListener('click', () => {
 		camera.position.set(-30, 50, -30);
-		window.open("http://127.0.0.1:5500/page3.html", "page")
+		window.open("http://127.0.0.1:5500/graph.html", "page")
 	})
 
 	// // Set Buttons
