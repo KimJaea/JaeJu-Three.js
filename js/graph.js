@@ -64,10 +64,10 @@ function init() {
 			side: THREE.DoubleSide
 		})
 
-		const message = ["60%", "15%", "25%"]
-		const shapes1 = font.generateShapes(message[0], 10)
-		const shapes2 = font.generateShapes(message[1], 10)
-		const shapes3 = font.generateShapes(message[2], 10)
+		const message = ["Depression\n60%", "Emotional Dysregulation\n15%", "Wonder\n25%"]
+		const shapes1 = font.generateShapes(message[0], 5)
+		const shapes2 = font.generateShapes(message[1], 5)
+		const shapes3 = font.generateShapes(message[2], 5)
 		const geometry1 = new THREE.ShapeGeometry(shapes1);
 		const geometry2 = new THREE.ShapeGeometry(shapes2);
 		const geometry3 = new THREE.ShapeGeometry(shapes3);

@@ -166,12 +166,12 @@ function loadModel() {
 			}
 		};
 	})
-	// GLTF Object without animation - Chair
-	loader.load('chair.gltf', function(gltf) {
-		gltf.scene.scale.set(5.0, 5.5, 5.0)
-		gltf.scene.position.set(-47, 0, -49)
-		scene.add( gltf.scene )
-	})
+	// // GLTF Object without animation - Chair
+	// loader.load('chair.gltf', function(gltf) {
+	// 	gltf.scene.scale.set(5.0, 5.5, 5.0)
+	// 	gltf.scene.position.set(-47, 0, -49)
+	// 	scene.add( gltf.scene )
+	// })
 	// GLB Object without animation - City
 	loader.load('city.glb', function(gltf){
 		gltf.scene.scale.setScalar(0.1)
