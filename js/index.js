@@ -6,11 +6,10 @@ import Stats from '../three.js-master/examples/jsm/libs/stats.module.js'
 var container, stats, controls, mixer, clock;
 var camera, scene, renderer;
 
-var moveForward = false
-var moveBackward = false
-var turnLeft = false
-var turnRight = false
-var model
+var moveForward = false, moveBackward = false, turnLeft = false, turnRight = false;
+var model, lastAction, activeAction;
+
+var mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster(), objects = [];
 
 init();
 animate();
@@ -60,10 +59,13 @@ function init() {
 	controls = new OrbitControls( camera, renderer.domElement );
 	controls.enableZoom = true
 	controls.enableDamping = true
-	controls.target.set( -48, -0, -48 );
+	controls.minDistance = 10;
+	controls.maxDistance = 40;
+	controls.target.set( -48, 5, -48 );
 	controls.update();
 
 	window.addEventListener( 'resize', onWindowResize, true );
+	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 	// Stats
 	stats = new Stats();
@@ -119,22 +121,25 @@ function onWindowResize() {
 function loadModel() {
 	// GLTF Object with animation - Model
 	var loader = new GLTFLoader().setPath('./assets/')
-	loader.load('Walking.glb', function(gltf) {
-		gltf.scene.scale.setScalar(0.05)
+	loader.load('merged_y.glb', function(gltf) {
+		gltf.scene.scale.setScalar(0.13)
 		gltf.scene.position.set(-47, 0, -47)
 		scene.add( gltf.scene );
 
-		//test code
 		mixer = new THREE.AnimationMixer( gltf.scene );
-		var action = mixer.clipAction( gltf.animations[ 0 ] );
-		action.play();
-
+		var action0 = mixer.clipAction( gltf.animations[ 0 ] ); // Walking
+		var action1 = mixer.clipAction( gltf.animations[ 1 ] ); // Standing
+		action0.play();
+		action1.play();
+		action0.setEffectiveWeight(0)
+		action1.setEffectiveWeight(1)
+		
 		model = gltf.scene
 		// Move Character with Key
+		// 87-w / 83-s / 65-a / 68-d / 32 - space
 		document.addEventListener("keydown", onDocumentKeyDown, false);
 		function onDocumentKeyDown(event) {
 			var keyCode = event.which;
-			// 87-w / 83-s / 65-a / 68-d / 32 - space
 			if (keyCode == 87) {
 				moveForward = true
 			} else if (keyCode == 83) {
@@ -143,15 +148,14 @@ function loadModel() {
 				turnLeft = true
 			} else if (keyCode == 68) {
 				turnRight = true
-			} else if (keyCode == 32) {
-				gltf.scene.position.set(-47, 0, -47)
-				console.log("RESET POSITION BY SPACE BAR")
 			}
+			action1.setEffectiveWeight(0)
+			action0.setEffectiveWeight(1)
+			
 		};
 		document.addEventListener("keyup", onDocumentKeyUp, false);
 		function onDocumentKeyUp(event) {
 			var keyCode = event.which;
-			// 87-w / 83-s / 65-a / 68-d / 32 - space
 			if (keyCode == 87) {
 				moveForward = false
 			} else if (keyCode == 83) {
@@ -164,20 +168,32 @@ function loadModel() {
 				gltf.scene.position.set(-47, 0, -47)
 				console.log("RESET POSITION BY SPACE BAR")
 			}
+			action0.setEffectiveWeight(0)
+			action1.setEffectiveWeight(1)
+			
+			//action0.crossFadeFrom(action1, 1, true);
+			//action0.fadeOut(1)
+			//action1.fadeIn(1)
+			//action0.stop();
+			//action1.play();
 		};
+		objects.push(model); // clickable model
 	})
+
 	// // GLTF Object without animation - Chair
 	// loader.load('chair.gltf', function(gltf) {
 	// 	gltf.scene.scale.set(5.0, 5.5, 5.0)
 	// 	gltf.scene.position.set(-47, 0, -49)
 	// 	scene.add( gltf.scene )
 	// })
+
 	// GLB Object without animation - City
 	loader.load('city.glb', function(gltf){
 		gltf.scene.scale.setScalar(0.1)
 		gltf.scene.position.set(0, 12, 0)
 		scene.add(gltf.scene);
 	})
+
 	// // TEST BOX
 	// const geometry = new THREE.BoxGeometry(1, 1, 1)
 	// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
@@ -188,7 +204,7 @@ function loadModel() {
 
 function moveModel() {
 	var walkSpeed = 0.3
-	var turnSpeed = Math.PI/30;
+	var turnSpeed = Math.PI/60;
 	if(moveForward) {
 		var direction = new THREE.Vector3()
 		model.getWorldDirection(direction);
@@ -208,7 +224,6 @@ function moveModel() {
 	if(turnRight) {
 		model.rotation.y -= turnSpeed;
 	}
-	//console.log(model.position)
 
 	// Up-Right
 	if(model.position.x > -30 && model.position.z < -60) {
@@ -259,26 +274,16 @@ function keyRest() {
 	turnRight = false
 }
 
-function changeAnimation(pose) {
-	// cancelAnimationFrame(requestAnimationFrame(animate))
-	// console.log('멈춤')
+function onDocumentMouseDown(event) {
+	event.preventDefault();
 
-	var loader = new GLTFLoader().setPath('./assets/')
-	loader.load( pose, function ( gltf ) {
-		mixer = new THREE.AnimationMixer( gltf.scene );
-		var action = mixer.clipAction( gltf.animations[ 0 ] );
-		action.play();
-	} );
-}
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-function setAction (toAction) {	
-	if (toAction != activeAction) {
-		lastAction = activeAction
-		activeAction = toAction
-		//lastAction.stop()
-		lastAction.fadeOut(1)
-		activeAction.reset()
-		activeAction.fadeIn(1)
-		activeAction.play()
+	raycaster.setFromCamera( mouse, camera );
+	var intersections = raycaster.intersectObjects(objects, true);
+	if ( intersections.length > 0 ) {
+		const object = intersections[ 0 ].object;
+		console.log("Hit @ " + toString( object.name ) );
 	}
 }
