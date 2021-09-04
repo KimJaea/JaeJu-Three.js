@@ -9,34 +9,40 @@
         <meta name="author" content="Kim Jaea & Hong JuHee" />
 		<link type="text/css" rel="stylesheet" href="./css/main.css">
 	</head>
-	<script language='javascript'>
-		function btn1 () {
-			//alert("button1");
-		}
+	<!-- Chat Bot -->
+	<script>!(function () {
+		let e = document.createElement("script"),
+		t = document.head || document.getElementsByTagName("head")[0];
+		(e.src = "https://cdn.jsdelivr.net/npm/rasa-webchat/lib/index.js"),
+		(e.async = !0),
+		(e.onload = () => {
+			window.WebChat.default(
+			{
+				initPayload: '/greet',
+				customData: { language: "kr" },
+				socketUrl: "http://localhost:5005",
+				title: "JaeJu Bot",
+				subtitle: "재주봇과 심리상담을 진행해 보세요."
+			},
+			null
+			);
+		}),
+		t.insertBefore(e, t.firstChild);
+	})();
 	</script>
 	<body>
-		<!-- Chat Bot -->
-		<script>!(function () {
-			let e = document.createElement("script"),
-			t = document.head || document.getElementsByTagName("head")[0];
-			(e.src = "https://cdn.jsdelivr.net/npm/rasa-webchat/lib/index.js"),
-			(e.async = !0),
-			(e.onload = () => {
-				window.WebChat.default(
-				{
-					initPayload: '/greet',
-					customData: { language: "kr" },
-					socketUrl: "http://localhost:5005",
-					title: "JaeJu Bot",
-					subtitle: "재주봇과 심리상담을 진행해 보세요."
-				},
-				null
-				);
-			}),
-			t.insertBefore(e, t.firstChild);
-		})();
-		</script>
-		
+		<header>
+			<img class="logo" src="./assets//J.png" alt="logo">
+			<nav>
+				<ul class="nav__links">
+					<li><a href="#">Services</a></li>
+					<li><a href="#">Services3</a></li>
+					<li><a href="#">Services5</a></li>
+				</ul>
+			</nav>
+			<a class="cta" href="#"><button>Contact</button></a>
+		</header>
+
 		<div id="menu">
 			Buttons
 			<div id="button1" type="button" onclick="btn1();">
