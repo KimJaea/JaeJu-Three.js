@@ -7,9 +7,10 @@ var container, stats, controls, mixer, clock;
 var camera, scene, renderer;
 
 var moveForward = false, moveBackward = false, turnLeft = false, turnRight = false;
-var model, lastAction, activeAction;
+var model, lastAction, activeAction, current_walkSpeed = 0, current_turnSpeed = 0;
 
 var mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster(), objects = [];
+var chatbot;
 
 init();
 animate();
@@ -19,14 +20,12 @@ function init() {
 	// Create Scene
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
-	
 	// Set Camera
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.5, 500 );
+	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight * 0.9), 0.5, 500 );
 	camera.position.set( -30, 20, -30 );
 	// Set Scene
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color( 0x6dddff );
-	// scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 ); // Fog
 	
 	clock = new THREE.Clock();
 
@@ -49,11 +48,15 @@ function init() {
 
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
 	renderer.setPixelRatio( Math.min(window.devicePixelRatio, 2) );
+	renderer.setAnimationLoop();
 	renderer.gammaOutput = true;
-	// renderer.setClearColor(0xffffff, 1)
 	container.appendChild( renderer.domElement );
+
+	// Event Listener
+	window.addEventListener( 'resize', onWindowResize, true );
+	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 	// Create controler
 	controls = new OrbitControls( camera, renderer.domElement );
@@ -63,9 +66,6 @@ function init() {
 	controls.maxDistance = 40;
 	controls.target.set( -48, 5, -48 );
 	controls.update();
-
-	window.addEventListener( 'resize', onWindowResize, true );
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 	// Stats
 	stats = new Stats();
@@ -79,6 +79,7 @@ function init() {
 	}
 	tick()
 
+	// Action when button clicked
 	const btn1 = document.querySelector('#button1');
 	btn1.addEventListener('click', () => {
 		camera.position.set(-30, 50, -60);
@@ -94,13 +95,8 @@ function init() {
 	const btn4 = document.querySelector('#button4');
 	btn4.addEventListener('click', () => {
 		camera.position.set(-30, 50, -30);
-		window.open("http://127.0.0.1:5500/graph.html", "page")
+		// window.open("http://127.0.0.1:5500/graph.html", "page")
 	})
-
-	// // Set Buttons
-	// var info = document.createElement('div');
-	// info.innerHTML ='<div id="menu"> Buttons <div id="button1"> BTN1 </div> <div id="button2"> BTN2 </div> <div id="button3"> BTN3 </div> <div id="button4"> BTN4 </div> </div>';
-	// container.appendChild(info);
 }
 
 function animate() {
@@ -113,9 +109,9 @@ function animate() {
 }
 
 function onWindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.aspect = window.innerWidth / (window.innerHeight * 0.9);
 	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
 }
 
 function loadModel() {
@@ -130,9 +126,10 @@ function loadModel() {
 		var action0 = mixer.clipAction( gltf.animations[ 0 ] ); // Walking
 		var action1 = mixer.clipAction( gltf.animations[ 1 ] ); // Standing
 		action0.play();
+		action0.setEffectiveWeight(0);
 		action1.play();
-		action0.setEffectiveWeight(0)
-		action1.setEffectiveWeight(1)
+		lastAction = action0;
+		activeAction = action1;
 		
 		model = gltf.scene
 		// Move Character with Key
@@ -142,50 +139,38 @@ function loadModel() {
 			var keyCode = event.which;
 			if (keyCode == 87) {
 				moveForward = true
+                setAction(action0);
 			} else if (keyCode == 83) {
 				moveBackward = true
+                setAction(action0);
 			} else if (keyCode == 65) {
 				turnLeft = true
+                setAction(action0);
 			} else if (keyCode == 68) {
 				turnRight = true
+                setAction(action0);
 			}
-			action1.setEffectiveWeight(0)
-			action0.setEffectiveWeight(1)
-			
 		};
 		document.addEventListener("keyup", onDocumentKeyUp, false);
 		function onDocumentKeyUp(event) {
 			var keyCode = event.which;
 			if (keyCode == 87) {
 				moveForward = false
+                setAction(action1);
 			} else if (keyCode == 83) {
 				moveBackward = false
+                setAction(action1);
 			} else if (keyCode == 65) {
 				turnLeft = false
+                setAction(action1);
 			} else if (keyCode == 68) {
 				turnRight = false
-			} else if (keyCode == 32) {
-				gltf.scene.position.set(-47, 0, -47)
-				console.log("RESET POSITION BY SPACE BAR")
+                setAction(action1);
 			}
-			action0.setEffectiveWeight(0)
-			action1.setEffectiveWeight(1)
-			
-			//action0.crossFadeFrom(action1, 1, true);
-			//action0.fadeOut(1)
-			//action1.fadeIn(1)
-			//action0.stop();
-			//action1.play();
 		};
 		objects.push(model); // clickable model
 	})
-
-	// // GLTF Object without animation - Chair
-	// loader.load('chair.gltf', function(gltf) {
-	// 	gltf.scene.scale.set(5.0, 5.5, 5.0)
-	// 	gltf.scene.position.set(-47, 0, -49)
-	// 	scene.add( gltf.scene )
-	// })
+	chatbot = true;
 
 	// GLB Object without animation - City
 	loader.load('city.glb', function(gltf){
@@ -193,36 +178,57 @@ function loadModel() {
 		gltf.scene.position.set(0, 12, 0)
 		scene.add(gltf.scene);
 	})
-
-	// // TEST BOX
-	// const geometry = new THREE.BoxGeometry(1, 1, 1)
-	// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-	// const boxMesh = new THREE.Mesh(geometry, material)
-	// boxMesh.position.set(-48, 0, -48)
-	// scene.add(boxMesh)
 }
 
 function moveModel() {
+	// smooth animation
+	if(lastAction.getEffectiveWeight() > 0)
+		lastAction.setEffectiveWeight(lastAction.getEffectiveWeight() - 0.05)
+	if(activeAction.getEffectiveWeight() < 1)
+		activeAction.setEffectiveWeight(activeAction.getEffectiveWeight() + 0.05)
+
+	// smooth movement
 	var walkSpeed = 0.3
-	var turnSpeed = Math.PI/60;
+	var turnSpeed = Math.PI/45;
+	if(moveForward || moveBackward ) {
+		if(current_walkSpeed < walkSpeed) {
+			current_walkSpeed += walkSpeed * 0.01
+		}
+	} else {
+		if(current_walkSpeed > 0) {
+			current_walkSpeed -= walkSpeed * 0.01
+		}
+	}
+	if(turnLeft || turnRight ) {
+		if(current_turnSpeed < turnSpeed) {
+			current_turnSpeed += turnSpeed * 0.01
+		}
+	} else {
+		if(current_turnSpeed > 0) {
+			current_turnSpeed -= turnSpeed * 0.01
+		}
+	}
+	
+	// movement speed
 	if(moveForward) {
 		var direction = new THREE.Vector3()
 		model.getWorldDirection(direction);
-		direction.multiplyScalar(walkSpeed)
+		direction.multiplyScalar(current_walkSpeed)
 		model.position.add(direction);
 	}
 	if(moveBackward) {
 		var direction = new THREE.Vector3()
 		model.getWorldDirection(direction);
-		direction.multiplyScalar(walkSpeed)
+		
+		direction.multiplyScalar(current_walkSpeed)
 		direction.negate()
 		model.position.add(direction);	
 	}
 	if(turnLeft) {
-		model.rotation.y += turnSpeed;
+		model.rotation.y += current_turnSpeed;
 	}
 	if(turnRight) {
-		model.rotation.y -= turnSpeed;
+		model.rotation.y -= current_turnSpeed;
 	}
 
 	// Up-Right
@@ -231,8 +237,6 @@ function moveModel() {
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
-		} else {
-			model.position.set(-47, 0, -47)
 		}
 	}
 	// Up-Left
@@ -241,8 +245,6 @@ function moveModel() {
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
-		} else {
-			model.position.set(-47, 0, -47)
 		}
 	}
 	// Down-Left
@@ -251,8 +253,6 @@ function moveModel() {
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
-		} else {
-			model.position.set(-47, 0, -47)
 		}
 	}
 	// Down-Right
@@ -261,8 +261,6 @@ function moveModel() {
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
-		} else {
-			model.position.set(-47, 0, -47)
 		}
 	}
 }
@@ -272,18 +270,47 @@ function keyRest() {
 	moveBackward = false
 	turnLeft = false
 	turnRight = false
+	model.position.set(-47, 0, -47)
 }
 
+function setAction (toAction) {	
+	if (toAction == activeAction) {		
+		return
+	} else {
+		lastAction = activeAction
+		activeAction = toAction
+		
+		lastAction.stop()
+		lastAction.setEffectiveWeight(lastAction.getEffectiveWeight() - 0.05)
+		activeAction.reset()
+		activeAction.setEffectiveWeight(activeAction.getEffectiveWeight() + 0.05)
+		activeAction.play()
+	}
+}
+
+// Recognize Character Click
 function onDocumentMouseDown(event) {
 	event.preventDefault();
 
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	mouse.y = - ( event.clientY / (window.innerHeight * 0.9) - (window.innerHeight * 0.0001)) * 2 + 1;
 
 	raycaster.setFromCamera( mouse, camera );
 	var intersections = raycaster.intersectObjects(objects, true);
 	if ( intersections.length > 0 ) {
 		const object = intersections[ 0 ].object;
-		console.log("Hit @ " + toString( object.name ) );
+		callChatBot();
+	}
+}
+
+function callChatBot() {
+	if(!chatbot){
+		chatbot = true;
+		var rasa = document.getElementById("rasaWebchatPro");
+		rasa.style.display = "block";
+	} else {
+		chatbot = false;
+		var rasa = document.getElementById("rasaWebchatPro");
+		rasa.style.display = "none";
 	}
 }
