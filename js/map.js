@@ -32,7 +32,7 @@ function init() {
 	camera.position.set( 0, 300, 300 );
 	// Set Scene
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color( 0x349934 );
+	//scene.background = new THREE.Color( 0x349934 );
 	
 	clock = new THREE.Clock();
 
