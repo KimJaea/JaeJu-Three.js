@@ -12,7 +12,7 @@ onWindowResize();
 
 function init() {
 	// Create Scene
-	container = document.getElementById( 'map-canvas' );
+	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 	// Set Camera
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight * 0.9), 0.5, 500 );

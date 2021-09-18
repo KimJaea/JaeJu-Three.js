@@ -147,6 +147,8 @@ function onDocumentMouseDown(event) {
 	var intersections = raycaster.intersectObjects(objects, true);
 	if ( intersections.length > 0 ) {
         if(object_selected) {
+			if(object_selected == intersections[ 0 ].object.parent)
+				return;
             object_selected.scale.setScalar(1)
             object_selected.position.add(new THREE.Vector3(0, -1, 0))
         }
@@ -245,5 +247,5 @@ function makeInformation(name, score, link, address) {
         string += link + '" target="_blank">병원 홈페이지 바로가기</a>';
     }
 
-    return string + '<br><br><hr color="navy">';
+    return string + '<p><br><br><br><br><hr color="navy">';
 }

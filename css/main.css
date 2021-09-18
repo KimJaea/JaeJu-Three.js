@@ -62,7 +62,7 @@ button:hover {
 	background-color: rgba(150, 220, 0, 0.7);
 }
 
-div.announcement {
+div.announcement-whole {
     width: 100%;
     height: 0px;
 	font-size: 30px;
@@ -80,6 +80,38 @@ div.announcement {
 	pointer-events: none;
 	display:block;
 	z-index: 1;
+}
+
+div.announcement-left {
+    width: 50%;
+    height: 0px;
+	font-size: 30px;
+	line-height: 30px;
+	color: #ffffff;
+    font-family: 'Song Myung';
+	overscroll-behavior: none;
+	position: absolute;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	display:block;
+	z-index: 1;
+	float:left
+}
+
+div.content-right {
+    width: 50%;
+    height: 90%;
+	font-size: 30px;
+	line-height: 30px;
+	color: #444444;
+	background-color: teal;
+	text-align: center;
+	float:right;
 }
 
 div.information {

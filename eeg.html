@@ -22,6 +22,20 @@
 			</nav>
 			<a class="cta" href="https://github.com/KimJaea/JaeJu-GetEEG" target="_blank"><button>Contact</button></a>
 		</header>
+		<script>
+			// Disappear Element
+			function hideDiv (){
+				document.getElementById("ann").style.display="none";
+			}
+			self.setTimeout("hideDiv()",5000);	
+		</script>
+		<div class="announcement-left" id="ann">
+			측정한 뇌파 데이터를 송신해 우울증을 판단해보세요.
+		</div>
+		<div class="content-right">
+            <input type= "file" value = "파일 선택" name="file"/>
+            <input type= "submit" value = "파일 전송">
+		</div>
 		<script type = "module" src="./js/eeg.js"></script>
 	</body>
 </html>
