@@ -79,7 +79,6 @@ function init() {
 		controls.update()
 	}
 	tick()
-
 }
 
 function animate() {
@@ -112,8 +111,6 @@ function loadModel() {
 		action1.play();
 		lastAction = action1;
 		activeAction = action1;
-		// action0.setEffectiveWeight(0)
-		// action1.setEffectiveWeight(1)
 
 		model = gltf.scene
 		// Move Character with Key
@@ -154,18 +151,6 @@ function loadModel() {
 				gltf.scene.position.set(-47, 0, -47)
 				console.log("RESET POSITION BY SPACE BAR")
 			}
-			// action0.fadeOut(0.5)
-			// action0.stop();
-			// action1.fadeIn(0.5)
-			// action1.play();
-			//action0.crossFadeFrom(action1, 1, true);
-			//action0.fadeOut(1)
-			//action1.fadeIn(1)
-			//action0.setEffectiveWeight(0)
-			//action1.setEffectiveWeight(1)
-			//action0.stop();
-			//action1.play();
-			//console.log("RESTART WALKING")
 		};
 	})
 

@@ -45,7 +45,6 @@ function init() {
 
 	// Load Models
 	loadModel();
-
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
@@ -78,23 +77,6 @@ function init() {
 		controls.update()
 	}
 	tick()
-
-	// Action when button clicked
-	const btn1 = document.querySelector('#button1');
-	btn1.addEventListener('click', () => { // Send EEG
-		camera.position.set(-30, 50, -60);
-		window.open("http://" + location.hostname + ":" + location.port + "/eeg.html");
-	})
-	const btn3 = document.querySelector('#button2');
-	btn3.addEventListener('click', () => { // Hospital
-		camera.position.set(-60, 50, -30);
-		window.open("http://" + location.hostname + ":" + location.port + "/map.html");
-	})
-	const btn4 = document.querySelector('#button3');
-	btn4.addEventListener('click', () => { // Record
-		camera.position.set(-30, 50, -30);
-		window.open("http://" + location.hostname + ":" + location.port + "/graph.html");
-	})
 }
 
 function animate() {
@@ -231,7 +213,7 @@ function moveModel() {
 
 	// Up-Right
 	if(model.position.x > -30 && model.position.z < -60) {
-		keyRest()
+		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
@@ -239,7 +221,7 @@ function moveModel() {
 	}
 	// Up-Left
 	if(model.position.x < -60 && model.position.z < -60) {
-		keyRest()
+		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
@@ -247,7 +229,7 @@ function moveModel() {
 	}
 	// Down-Left
 	if(model.position.x < -60 && model.position.z > -30) {
-		keyRest()
+		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
@@ -255,7 +237,7 @@ function moveModel() {
 	}
 	// Down-Right
 	if(model.position.x > -30 && model.position.z > -30) {
-		keyRest()
+		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
 			window.open("https://www.youtube.com/", "page")
@@ -263,7 +245,7 @@ function moveModel() {
 	}
 }
 
-function keyRest() {
+function keyReset() {
 	moveForward = false
 	moveBackward = false
 	turnLeft = false

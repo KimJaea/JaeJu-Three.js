@@ -12,7 +12,7 @@ onWindowResize();
 
 function init() {
 	// Create Scene
-	container = document.createElement( 'div' );
+	container = document.getElementById( 'map-canvas' );
 	document.body.appendChild( container );
 	// Set Camera
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight * 0.9), 0.5, 500 );
@@ -70,23 +70,6 @@ function init() {
 		controls.update()
 	}
 	tick()
-
-	// Action when button clicked
-	const rtn = document.querySelector('#button0');
-	rtn.addEventListener('click', () => {
-		var port = location.port;
-		window.open("http://127.0.0.1:" + port + "/index.html", "page")
-	})
-	const btn1 = document.querySelector('#button1');
-	btn1.addEventListener('click', () => { // Send EEG
-		camera.position.set(-30, 50, -60);
-		window.open("http://" + location.hostname + ":" + location.port + "/eeg.html");
-	})
-	const btn3 = document.querySelector('#button2');
-	btn3.addEventListener('click', () => { // Hospital
-		camera.position.set(-60, 50, -30);
-		window.open("http://" + location.hostname + ":" + location.port + "/map.html");
-	})
 }
 
 function animate() {

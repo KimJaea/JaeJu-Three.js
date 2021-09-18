@@ -22,15 +22,20 @@
 			</nav>
 			<a class="cta" href="https://github.com/KimJaea/JaeJu-GetEEG" target="_blank"><button>Contact</button></a>
 		</header>
-
-		<div class="information">
-			병원 정보<br>
-			1. 병원<br>
-			2. 주소<br>
-			3. 링크<br>
-			4. 평점<br>
-		</div>
-		
+		<!-- Map -->
 		<script type = "module" src="./js/map.js"></script>
+		<script src="js/hospital_data.json"></script>
+		<!-- Map Info -->
+		<div class="information">
+			<div class="map-info-frame">
+				<nav>
+					<ul id="list-info"></ul>
+				</nav>
+			</div>
+		</div>		
+		<!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <!-- Geocoding API -->
+        <script src="https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAgvWdfxKIz3jNw_ji2E2pxmU0DDfYonjA"></script>
 	</body>
 </html>
