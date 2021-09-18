@@ -1,7 +1,7 @@
-import * as THREE from '../three.js-master/build/three.module.js'
-import {GLTFLoader} from '../three.js-master/examples/jsm/loaders/GLTFLoader.js'
-import {OrbitControls} from '../three.js-master/examples/jsm/controls/OrbitControls.js'
-import Stats from '../three.js-master/examples/jsm/libs/stats.module.js'
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
+import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/stats.module.js'
 
 var container, stats, controls, mixer, clock;
 var camera, scene, renderer;
@@ -81,21 +81,19 @@ function init() {
 
 	// Action when button clicked
 	const btn1 = document.querySelector('#button1');
-	btn1.addEventListener('click', () => {
+	btn1.addEventListener('click', () => { // Send EEG
 		camera.position.set(-30, 50, -60);
+		window.open("http://" + location.hostname + ":" + location.port + "/eeg.html");
 	})
-	const btn2 = document.querySelector('#button2');
-	btn2.addEventListener('click', () => {
-		camera.position.set(-60, 50, -60);
-	})
-	const btn3 = document.querySelector('#button3');
-	btn3.addEventListener('click', () => {
+	const btn3 = document.querySelector('#button2');
+	btn3.addEventListener('click', () => { // Hospital
 		camera.position.set(-60, 50, -30);
+		window.open("http://" + location.hostname + ":" + location.port + "/map.html");
 	})
-	const btn4 = document.querySelector('#button4');
-	btn4.addEventListener('click', () => {
+	const btn4 = document.querySelector('#button3');
+	btn4.addEventListener('click', () => { // Record
 		camera.position.set(-30, 50, -30);
-		// window.open("http://127.0.0.1:5500/graph.html", "page")
+		window.open("http://" + location.hostname + ":" + location.port + "/graph.html");
 	})
 }
 

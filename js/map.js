@@ -1,7 +1,7 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
-import Stats from '../three.js-master/examples/jsm/libs/stats.module.js'
+import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/stats.module.js'
 
 import {FBXLoader} from '../three.js-master/examples/jsm/loaders/FBXLoader.js'
 import {DRACOLoader} from '../three.js-master/examples/jsm/loaders/DRACOLoader.js'

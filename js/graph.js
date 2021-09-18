@@ -1,7 +1,7 @@
-import * as THREE from '../three.js-master/build/three.module.js'
-import {GLTFLoader} from '../three.js-master/examples/jsm/loaders/GLTFLoader.js'
-import {OrbitControls} from '../three.js-master/examples/jsm/controls/OrbitControls.js'
-import Stats from '../three.js-master/examples/jsm/libs/stats.module.js'
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
+import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/stats.module.js'
 
 var container, stats, controls, mixer, clock;
 var camera, scene, renderer, canvas;
@@ -14,14 +14,12 @@ function init() {
 	// Create Scene
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
-	
 	// Set Camera
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.5, 1000 );
-	camera.position.set( 30, 60, 30 );
+	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight * 0.9), 0.5, 500 );
+	camera.position.set( 0, 60, 120 );
 	// Set Scene
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color( 0x222222 );
-	// scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 ); // Fog
 	
 	clock = new THREE.Clock();
 
@@ -39,7 +37,70 @@ function init() {
 	dirLight.shadow.camera.right = 120;
 	scene.add( dirLight );
 
-    // https://jsfiddle.net/prisoner849/t2rm8awk/
+	// Load Models
+	loadModel();
+
+	// Set Renderer
+	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
+	renderer.setPixelRatio( Math.min(window.devicePixelRatio, 2) );
+	renderer.gammaOutput = true;
+	container.appendChild( renderer.domElement );
+
+	// Event Listener
+	window.addEventListener( 'resize', onWindowResize, true );
+
+	// Create controler
+	controls = new OrbitControls( camera, renderer.domElement );
+	controls.enableZoom = true
+	controls.enableDamping = true
+	controls.minDistance = 50;
+	controls.maxDistance = 200;
+	controls.target.set( 0, 0, 0 );
+	controls.update();
+
+	// Stats
+	stats = new Stats();
+	container.appendChild( stats.dom );
+
+	// Make mouse control smooth
+	const tick = ()=>{
+		renderer.render(scene, camera)
+		window.requestAnimationFrame(tick)
+		controls.update()
+	}
+	tick()
+
+	// Action when button clicked
+	const rtn = document.querySelector('#button0');
+	rtn.addEventListener('click', () => {
+		var port = location.port;
+		window.open("http://127.0.0.1:" + port + "/index.html", "page")
+	})
+	const btn1 = document.querySelector('#button1');
+	btn1.addEventListener('click', () => { // Send EEG
+		camera.position.set(-30, 50, -60);
+		window.open("http://" + location.hostname + ":" + location.port + "/eeg.html");
+	})
+	const btn3 = document.querySelector('#button2');
+	btn3.addEventListener('click', () => { // Hospital
+		camera.position.set(-60, 50, -30);
+		window.open("http://" + location.hostname + ":" + location.port + "/map.html");
+	})
+}
+
+function animate() {
+    requestAnimationFrame(animate)
+    renderer.render(scene, camera)
+}
+
+function onWindowResize() {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function loadModel() {
     // Create Pie Chart
     const geometry1 = new THREE.CylinderGeometry( 50, 50, 10, 28, 1, false, 0, 1.2 * Math.PI );
     const material1 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
@@ -95,50 +156,4 @@ function init() {
 		scene.add(text3)
 
 	})
-
-	// Set Renderer
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.setPixelRatio( Math.min(window.devicePixelRatio, 2) );
-	renderer.gammaOutput = true;
-	// renderer.setClearColor(0xffffff, 1)
-	container.appendChild( renderer.domElement );
-
-	// Create controler
-	controls = new OrbitControls( camera, renderer.domElement );
-	controls.enableZoom = true
-	controls.enableDamping = true
-	controls.target.set( 0, 0, 0 );
-	controls.update();
-
-	window.addEventListener( 'resize', onWindowResize, true );
-
-	// Stats
-	stats = new Stats();
-	container.appendChild( stats.dom );
-
-	// Make mouse control smooth
-	const tick = ()=>{
-		renderer.render(scene, camera)
-		window.requestAnimationFrame(tick)
-		controls.update()
-	}
-	tick()
-
-	const rtn = document.querySelector('#button1');
-	rtn.addEventListener('click', () => {
-		var port = location.port;
-		window.open("http://127.0.0.1:" + port + "/index.html", "page")
-	})
-}
-
-function animate() {
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-}
-
-function onWindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
 }
