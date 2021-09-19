@@ -27,6 +27,7 @@ function init() {
 	camera.position.set( 0, 300, 300 );
 	// Set Scene
 	scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0xeeccaa );
 	
 	clock = new THREE.Clock();
 
@@ -100,7 +101,7 @@ function loadModel() {
 	loader.load('Seoul.glb', function(gltf) {
         var obj = gltf.scene;
 		obj.position.set(-50, 0, -50)
-		obj.children[0].children[0].material.color.set(0x125612) // Darker
+		obj.children[0].children[0].material.color.set(0x095b09) // Darker
 		scene.add( obj );
         obj.children.forEach( (child, ndx) => {
             objects.push(child)
@@ -109,7 +110,7 @@ function loadModel() {
 	loader.load('Seoul.glb', function(gltf) {
         var obj = gltf.scene;
 		obj.position.set(-50, 0, -50)
-		obj.children[0].children[0].material.color.set(0x349934) // Lighter
+		obj.children[0].children[0].material.color.set(0x349943) // Lighter
 		scene.add( obj );
 	})
 }

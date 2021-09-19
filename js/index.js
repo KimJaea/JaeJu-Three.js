@@ -5,6 +5,7 @@ import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r13
 
 var container, stats, controls, mixer, clock;
 var camera, scene, renderer;
+var ratioWidth = 1.0, ratioHeight = 0.9;
 
 var moveForward = false, moveBackward = false, turnLeft = false, turnRight = false;
 var model, lastAction, activeAction, current_walkSpeed = 0, current_turnSpeed = 0;
@@ -21,7 +22,7 @@ function init() {
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 	// Set Camera
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight * 0.9), 0.5, 500 );
+	camera = new THREE.PerspectiveCamera( 75, (window.innerWidth * ratioWidth) / (window.innerHeight * ratioHeight), 0.5, 1000 );
 	camera.position.set( -30, 20, -30 );
 	// Set Scene
 	scene = new THREE.Scene();
@@ -45,9 +46,10 @@ function init() {
 
 	// Load Models
 	loadModel();
+	
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
+	renderer.setSize( window.innerWidth * ratioWidth, window.innerHeight * ratioHeight );
 	renderer.setPixelRatio( Math.min(window.devicePixelRatio, 2) );
 	renderer.setAnimationLoop();
 	renderer.gammaOutput = true;
@@ -89,9 +91,9 @@ function animate() {
 }
 
 function onWindowResize() {
-	camera.aspect = window.innerWidth / (window.innerHeight * 0.9);
+	camera.aspect = (window.innerWidth * ratioWidth) / (window.innerHeight * ratioHeight );
 	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight * 0.9 );
+	renderer.setSize( window.innerWidth * ratioWidth, window.innerHeight * ratioHeight );
 }
 
 function loadModel() {
