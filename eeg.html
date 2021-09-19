@@ -14,28 +14,21 @@
 			<img class="logo" src="./assets//J.png" alt="logo">
 			<nav>
 				<ul class="nav__links">
-					<li><a id="button0">Main</a></li>
-					<li><a id="button1">Send EEG</a></li>
-					<li><a id="button2">Hospital</a></li>
-					<li><a id="button3">Record</a></li>
+					<li><a id="button1" href="/index">Main</a></li>
+					<li><a id="button2" href="#">Send EEG</a></li>
+					<li><a id="button3" href="/map">Hospital</a></li>
+					<li><a id="button4" href="/statistics">Record</a></li>
 				</ul>
 			</nav>
 			<a class="cta" href="https://github.com/KimJaea/JaeJu-GetEEG" target="_blank"><button>Contact</button></a>
 		</header>
-		<script>
-			// Disappear Element
-			function hideDiv (){
-				document.getElementById("ann").style.display="none";
-			}
-			self.setTimeout("hideDiv()",5000);	
-		</script>
-		<div class="announcement-left" id="ann">
-			측정한 뇌파 데이터를 송신해 우울증을 판단해보세요.
+		<div class="announcement-whole-unclickable">
+			<br>측정한 뇌파 데이터를 송신해 우울증을 판단해보세요.<br><br>
+			<form action = "/fileUpload" method = "POST" enctype="multipart/form-data">
+				<input type = "file" class="btn btn-xl btn-light me-4" value = "파일 선택" name = "file"/>
+				<input type = "submit" class="btn btn-xl btn-dark" value = "파일 전송" class="btn btn-xl btn-light me-4">
+			</form><br>
 		</div>
-		<div class="content-right">
-            <input type= "file" value = "파일 선택" name="file"/>
-            <input type= "submit" value = "파일 전송">
-		</div>
-		<script type = "module" src="./js/eeg.js"></script>
+		<script type = "module" src="./js/dance.js"></script>
 	</body>
 </html>

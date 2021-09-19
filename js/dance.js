@@ -4,8 +4,8 @@ import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/thre
 import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/stats.module.js'
 
 var container, stats, controls, mixer, clock;
-var camera, scene, renderer;
-var ratioWidth = 0.5, ratioHeight = 0.9;
+var camera, scene, renderer, mesh;
+var ratioWidth = 1.0, ratioHeight = 0.7;
 
 init();
 animate();
@@ -20,7 +20,8 @@ function init() {
 	camera.position.set( 0, 10, 15 );
 	// Set Scene
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color( 0x3ed3ed );
+	scene.background = new THREE.Color( 0xee99aa );
+	scene.fog = new THREE.Fog(0x000000, 50, 150);
 	
 	clock = new THREE.Clock();
 
@@ -40,6 +41,7 @@ function init() {
 
 	// Load Models
 	loadModel();
+	setMesh();
 
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
@@ -78,6 +80,7 @@ function animate() {
 	var delta = clock.getDelta();
 	if ( mixer ) mixer.update( delta );
     renderer.render(scene, camera);
+	if ( mesh ) mesh.rotation.y += 0.005;
 	stats.update();
 }
 
@@ -99,4 +102,21 @@ function loadModel() {
 		var action = mixer.clipAction( gltf.animations[ 0 ] ); // Dance
         action.play();
     })
+}
+
+function setMesh() {
+	mesh = new THREE.Group();
+
+	const area = 130;
+	// const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+	for (let i = 0; i < 500; i++) {
+		var color = new THREE.Color( 0xffffff );
+		color.setHex( Math.random() * 0xcccccc  + 0x444444);
+		const material = new THREE.MeshBasicMaterial( { color: color } );
+		const geometry = new THREE.SphereGeometry();
+		const cube = new THREE.Mesh( geometry, material );
+		cube.position.set(THREE.Math.randFloatSpread(area), THREE.Math.randFloatSpread(area), THREE.Math.randFloatSpread(area));
+		mesh.add( cube );
+	}
+	scene.add( mesh );
 }

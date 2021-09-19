@@ -238,7 +238,7 @@ function makeInformation(name, score, link, address) {
         starCount--;
     }
 
-    string += '<br><br>';
+    string += '<br>';
     if(link == "없습니다") {
         string += '<a class="btn btn-xl btn-light me-4" href="#!">';
         string += '병원 홈페이지 준비중</a>';

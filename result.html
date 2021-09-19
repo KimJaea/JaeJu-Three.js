@@ -14,27 +14,19 @@
 			<img class="logo" src="./assets//J.png" alt="logo">
 			<nav>
 				<ul class="nav__links">
-					<li><a id="button0">Main</a></li>
-					<li><a id="button1">Send EEG</a></li>
-					<li><a id="button2">Hospital</a></li>
-					<li><a id="button3">Record</a></li>
+					<li><a id="button1" href="/index">Main</a></li>
+					<li><a id="button2" href="/upload">Send EEG</a></li>
+					<li><a id="button3" href="/map">Hospital</a></li>
+					<li><a id="button4" href="/statistics">Record</a></li>
 				</ul>
 			</nav>
 			<a class="cta" href="https://github.com/KimJaea/JaeJu-GetEEG" target="_blank"><button>Contact</button></a>
 		</header>
-		<script>
-			// Disappear Element
-			function hideDiv (){
-				document.getElementById("ann").style.display="none";
-			}
-			self.setTimeout("hideDiv()",5000);	
-		</script>
-		<div class="announcement-left" id="ann">
-			당신의 우울증 판단 결과입니다.
+		<div class="announcement-whole-unclickable">
+			<br>당신의 우울증 판단 결과입니다.<br><br>
+			<p id="ann"></p><br>
 		</div>
-		<div class="content-right">
-			<p>{{value}}를 전달받았다</p>
-		</div>
-		<script type = "module" src="./js/result.js"></script>
+		<script src="./js/result.js"></script>
+		<script type = "module" src="./js/dance.js"></script>
 	</body>
 </html>
