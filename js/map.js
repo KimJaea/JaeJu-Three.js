@@ -47,7 +47,7 @@ function init() {
 
 	// Load Models
 	loadModel();
-	loadText('지역을\n선택하세요.', new THREE.Vector3(0, 50, 0));
+	loadText('선택하세요', new THREE.Vector3(-50, 50, 0));
 	
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
