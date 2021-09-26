@@ -33,9 +33,20 @@
 		})();
 		// Disappear Element
 		function hideDiv (){
-			  document.getElementById("ann").style.display="none";
+			document.getElementById("ann").style.display="none";
+		}
+		self.setTimeout("hideDiv()",5000);	
+		// Button Work
+		function buttonConfirm () {
+			const address = document.getElementById('address').innerText;
+			if(address) {
+				window.open(address, "page");
 			}
-			self.setTimeout("hideDiv()",5000);	
+			document.getElementById("popup").style.display="none";
+		}
+		function buttonCancel () {
+			document.getElementById("popup").style.display="none";
+		}
 		</script>
 		<header>
 			<img class="logo" src="./assets//J.png" alt="logo">
@@ -49,11 +60,22 @@
 			</nav>
 			<a class="cta" href="https://github.com/KimJaea/JaeJu-GetEEG" target="_blank"><button>Contact</button></a>
 		</header>
-		<div class="announcement-whole">
-			<br>마우스를 이용해 화면을 움직여보세요.
-		</div>
 		<div class="announcement-whole" id="ann">
 			<br><br>캐릭터를 클릭해 챗봇과의 채팅을 시작할 수 있습니다.
+		</div>
+
+		<div id="address" style="display: none;"></div>
+		<div id="popup" class="layer_popup" style="display: block;">
+			<div class="layer">
+				<div class="text_area" id="text_area">
+					<p> 환영합니다. 마우스와 키보드를 이용해 자유롭게 움직여보세요. </p>
+				</div>
+				<div class="btn_area">
+					<button class="btn_confirm" id="btn_confirm" onclick="buttonConfirm()">확인</button>
+					<button class="btn_cancel" id="btn_cancel" onclick="buttonCancel()">취소</button>
+				</div>
+			</div>
+			<div class="dimmed"></div>
 		</div>
 		<script type = "module" src="./js/index.js"></script>
 	</body>
