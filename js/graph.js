@@ -95,20 +95,9 @@ function loadModel() {
 	})
 	
 	// import data from server
-    //var dp = {{ value|tojson }};
-	var data = [[['2021_8_08', 1, 0.9164004780000438],
-    ['2021_9_08', 1, 0.9164004780000438],
-    ['2021_9_18', 0, 0.9164004780273438],
-    ['2021_9_19', 0, 0.9159774780273438]],
-	[[0.2, 0.4, 2.0, 3.0, -25.0, -3.0, 2.0, 2.20, 2.0, 2.0,
-		2.0, 2.0, 12.0, 9.0, -10.0, 1.0, -6.0, 2.0, 5.0, -7.0,
-		-2.0, -12.0, 12.0, -9.0, 10.0, 1.0, -6.0, 2.0, 5.0, -7.0]],
-    [['depression_insomnia', 'depression_insomnia', 'depression_dazed'],
-    ['sadness_miserable', 'depression_insomnia', 'sadness_miserable'],
-    ['depression_gloomy', 'depression_confidence', 'depression_dazed', 'depression_concentration'],
-    ['depression_lethargy', 'depression_lethargy', 'sadness_upset', 'sadness_upset'],
-    ['angry_resentment', 'angry_resentment', 'lonely_meaningless', 'sadness_regret']]]
-
+    // 3 Dementional Data from 'EEG_Wiset_Web'
+    var dp = {{ value|tojson }};
+	
     var data_eeg = data[0];
 	var data_raw = data[1];
     var data_chat = data[2];
@@ -129,27 +118,31 @@ function loadModel() {
 	loadLineChart(data_raw[0]);
 
 	// Load Bar Chart & Text
-	var symptomNames_ = [ 'depression', 'sadness', 'lonely', 'angry']
-    var symptomNames_kr = [ '우울증', '슬픔', '외로움', '분노']
+    var symptomNames_ = [ 'depression', 'sadness', 'lonely', 'angry', 'emotionaldysregulation']
+    var symptomNames_kr = [ '우울함', '슬픔', '외로움', '화', '감정 조절 장애']
 
     var symptomDepression_ = ['depression', 'depression_gloomy', 'depression_dazed', 'depression_lethargy', 'depression_desire', 'depression_insomnia',
     'depression_interest', 'depression_appetite', 'depression_confidence', 'depression_loser', 'depression_concentration']
     var symptomSadness_ = ['sadness', 'sadness_upset', 'sadness_tear', 'sadness_cry', 'sadness_guilty', 'sadness_miss', 'sadness_remorse',
     'sadness_sad', 'sadness_miserable', 'sadness_vanity', 'sadness_despair', 'sadness_unfair', 'sadness_regret', 'sadness_disappointment']
     var symptomLonely_ = ['lonely', 'lonely_meaningless', 'lonely_suitability', 'lonely_smolder', 'lonely_hard' ]
-    var symptomAngry_ = ['angry', 'angry_resentment', 'angry_dissatisfaction']
+    var symptomAngry_ = ['angry', 'angry_resentment', 'angry_dissatisfaction', 'angry_hate', 'angry_anger', 'angry_hatred']
+    var symptomEmotionaldysregulation_ = [ 'emotionaldysregulation_paralysis', 'emotionaldysregulation_arbitrariness',
+        'emotionaldysregulation_suppression', 'emotionaldysregulation_conflict']
 
-    var symptomDepression_kr = ['우울함', '침울함', '멍함', '무기력', '의욕 없음', '불면증',
-    '흥미 없음', '식욕 없음', '자존감 하락', '패배감', '집중력 하락']
+    var symptomDepression_kr = ['우울함', '침울함', '멍함', '무기력', '의욕_없음', '불면증',
+    '흥미_없음', '식욕_없음', '자존감_하락', '패배감', '집중력_하락']
     var symptomSadness_kr = ['슬픔', '속상', '눈물', '울음', '죄책감', '그리움', '연민',
     '서러움', '비참함', '허망함', '절망', '억울함', '후회', '서운함']
     var symptomLonely_kr = ['외로움', '무의미', '적적함', '울적', '고단함' ]
-    var symptomAngry_kr = ['분노', '원망', '불만']
+    var symptomAngry_kr = ['화', '원망', '불만', '미움', '분노', '증오']
+    var symptomEmotionaldysregulation_kr = ['감정 마비', '독단', '강압', '갈등']
 
     var symptomDepression_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var symptomSadness_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var symptomLonely_count = [0, 0, 0, 0, 0 ]
-    var symptomAngry_count = [0, 0, 0]
+    var symptomAngry_count = [0, 0, 0, 0, 0, 0]
+    var symptomEmotionaldysregulation_count = [ 0, 0, 0, 0]
 
     for(let i = 0; i < data_chat.length; i++) {
         for(let j = 0; j < data_chat[i].length; j++) {
@@ -174,6 +167,10 @@ function loadModel() {
                             num = symptomAngry_.indexOf(symptom);
                             symptomAngry_count[num]++;
                             break;
+						case 4: // 감정 조절 장애
+							num = symptomEmotionaldysregulation_.indexOf(symptom);
+							symptomEmotionaldysregulation_count[num]++;
+							break;
                     }
 
                     break;
@@ -231,10 +228,12 @@ function loadBarChart(values, items) {
 }
 
 function loadLineChart(values) {
-	const lineUnit = 5;
+	const lineUnit = 0.5;
+	const pointUnit = 10;
 	const points = []; 
 	for(let i = 0; i < values.length; i++) {
-		points.push(new THREE.Vector3(-250 + lineUnit * i, values[i], -400));
+		points.push(new THREE.Vector3(-250 + lineUnit * i, values[i] * pointUnit, -400));
+		console.log(i)
 	}
 	
 	const geometry = new THREE.BufferGeometry().setFromPoints( points );

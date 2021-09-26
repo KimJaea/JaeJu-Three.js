@@ -7,6 +7,8 @@ var container, stats, controls, mixer, clock;
 var camera, scene, renderer;
 var ratioWidth = 1.0, ratioHeight = 0.9;
 
+var geometry, text, button = ["", ""];
+
 var moveForward = false, moveBackward = false, turnLeft = false, turnRight = false;
 var model, lastAction, activeAction, current_walkSpeed = 0, current_turnSpeed = 0;
 
@@ -160,6 +162,16 @@ function loadModel() {
 		gltf.scene.position.set(0, 12, 0)
 		scene.add(gltf.scene);
 	})
+
+	// Load Text above Building
+	// Up-Right
+	loadTextEng("Send EEG", new THREE.Vector3(-25, 20, -75), -Math.PI / 4); 
+	// Up-Left
+	loadTextEng("Hospital", new THREE.Vector3(-65, 20, -65), Math.PI / 4); 
+	// Down-Left
+	loadTextEng("Record", new THREE.Vector3(-65, 20, -20), Math.PI / 4* 3); 
+	// Down-Right
+	loadTextEng("Contact", new THREE.Vector3(-25, 20, -25), -Math.PI / 4* 3); 
 }
 
 function moveModel() {
@@ -213,36 +225,34 @@ function moveModel() {
 		model.rotation.y -= current_turnSpeed;
 	}
 
-	// Up-Right
+	// Up-Right // Send EEG
 	if(model.position.x > -30 && model.position.z < -60) {
-		keyReset()
-		var result = confirm("페이지가 전환됩니다.")
-		if(result) {
-			window.open("https://www.youtube.com/", "page")
-		}
+		keyReset();
+		//loadButton("뇌파_측정", "/eeg", new THREE.Vector3(-25, 10, -75), -Math.PI / 4);
+		loadPopUp("/eeg");
 	}
-	// Up-Left
+	// Up-Left // Hospital
 	if(model.position.x < -60 && model.position.z < -60) {
 		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
-			window.open("https://www.youtube.com/", "page")
+			window.open("/map", "page")
 		}
 	}
-	// Down-Left
+	// Down-Left // Record
 	if(model.position.x < -60 && model.position.z > -30) {
 		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
-			window.open("https://www.youtube.com/", "page")
+			window.open("/graph", "page")
 		}
 	}
-	// Down-Right
+	// Down-Right // Contact
 	if(model.position.x > -30 && model.position.z > -30) {
 		keyReset()
 		var result = confirm("페이지가 전환됩니다.")
 		if(result) {
-			window.open("https://www.youtube.com/", "page")
+			window.open("https://github.com/KimJaea/JaeJu-GetEEG", "page")
 		}
 	}
 }
@@ -281,7 +291,11 @@ function onDocumentMouseDown(event) {
 	var intersections = raycaster.intersectObjects(objects, true);
 	if ( intersections.length > 0 ) {
 		const object = intersections[ 0 ].object;
-		callChatBot();
+		if(object == button[0]) {
+			window.open(button[1], "page");
+		} else {
+			callChatBot();
+		}
 	}
 }
 
@@ -295,4 +309,78 @@ function callChatBot() {
 		var rasa = document.getElementById("rasaWebchatPro");
 		rasa.style.display = "none";
 	}
+}
+
+function loadTextEng(string_name, string_loc, string_rot) {
+	// Create Text Geometry
+	const loader = new THREE.FontLoader();
+	loader.load( '../assets/roboto/Roboto_Regular.json', function(font) {
+		var geometry = new THREE.TextGeometry(string_name, {
+			font: font,
+			size: 3,
+			height: 2,
+		})
+		var text = new THREE.Mesh(geometry, [
+			new THREE.MeshPhongMaterial({ color: 0xad4000 }), //font
+			new THREE.MeshPhongMaterial({ color: 0x5c2301 }) //side
+		])
+		text.castShadow = true
+		text.position.set(string_loc.x, string_loc.y, string_loc.z)
+		text.rotateY(string_rot)
+		scene.add(text)
+	})
+}
+
+function loadTextKr(string_name, string_loc, string_rot) {
+	// Create Text Geometry
+	const loader = new THREE.FontLoader();
+	loader.load( '../assets/Do_Hyeon/Do_Hyeon_Regular.json', function(font) {
+		geometry = new THREE.TextGeometry(string_name, {
+			font: font,
+			size: 2,
+			height: 2,
+		})
+		text = new THREE.Mesh(geometry, [
+			new THREE.MeshPhongMaterial({ color: 0xad4000 }), //font
+			new THREE.MeshPhongMaterial({ color: 0x5c2301 }) //side
+		])
+		text.castShadow = true
+		text.position.set(string_loc.x, string_loc.y, string_loc.z)
+		text.rotateY(string_rot)
+		scene.add(text)
+	})
+}
+
+function loadButton(string_name, string_add, string_loc, string_rot) {
+	// Create Text
+	const posKr = new THREE.Vector3(string_loc.x, string_loc.y - 3, string_loc.z);
+	loadTextKr(string_name, posKr, string_rot);
+	const posEng = new THREE.Vector3(posKr.x, posKr.y - 3, posKr.z);
+	loadTextEng("Click Here!", posEng, string_rot);
+	
+	// Create Box
+	const geometry = new THREE.BoxGeometry( 20, 10, 1 );
+	const material = new THREE.MeshBasicMaterial( {color: 0xeeeeee} );
+	const cube = new THREE.Mesh( geometry, material );
+	cube.position.set(string_loc.x + 5, string_loc.y - 5, string_loc.z +5);
+	cube.rotateY(string_rot);
+	scene.add( cube );
+	
+	objects.push(cube);
+	button[0] = cube;
+	button[1] = string_add;
+}
+
+function loadPopUp(address) {
+
+	var popupX = (document.body.offsetWidth / 2) - (200 / 2);
+	var popupY= (window.screen.height / 2) - (300 / 2);
+
+	window.open('페이지를 전환', '', 'status=no, height=300, width=200, left='+ popupX + ', top='+ popupY);
+	
+	// var result = confirm("페이지가 전환됩니다.")
+	// if(result) {
+	// 	window.open(address, "page")
+	// }
+		
 }
