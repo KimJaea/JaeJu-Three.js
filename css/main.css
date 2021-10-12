@@ -28,6 +28,7 @@
  
  body {
 	 height: 90%;
+   overflow: hidden;
  }
  
  .logo {
@@ -132,8 +133,9 @@
  
  div.information {
 	 width: 27%;
-	 height: 90%;
+	 height: 2%;
 	 float: right;
+   overflow: scroll;
  }
  
  div.map-info-frame {
@@ -145,7 +147,6 @@
 	 width: 100%;
 	 height: 100%;
 	 float: right;
-	 overflow: auto;
    }
    
    .fa-star {

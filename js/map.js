@@ -49,6 +49,7 @@ function init() {
 	loadModel();
 	loadText('선택하세요', new THREE.Vector3(-50, 50, 0));
 	
+	// Get Current Location
 	currentLocation();
 	
 	// Set Renderer
@@ -115,7 +116,6 @@ function loadModel() {
 		obj.children[0].children[0].material.color.set(0x349943) // Lighter
 		scene.add( obj );
 	})
-
 }
 
 function loadText(string_name, string_loc) {
@@ -143,7 +143,9 @@ function loadText(string_name, string_loc) {
 }
 
 function currentLocation() {
-	navigator.geolocation.getCurrentPosition(handleLocation, handleError); 
+	if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(handleLocation, handleError); 
+	}
 	
     function handleLocation(position)  {    
 		var geocoder = new google.maps.Geocoder;
@@ -181,12 +183,11 @@ function currentLocation() {
 
     // Error Call-Back 
     function handleError(err) {
-        var outDiv = document.getElementById("result");
         if(err.code == 1) {
-            outDiv.innerHTML = "위치 검색을 허용해 주세요.";
+            console.log("위치 검색을 허용해 주세요.");
         }
         else {
-            outDiv.innerHTML = "에러가 발생했습니다.\n" + err.code;
+			console.log("에러가 발생했습니다.\n" + err.code);
         }
 	}
 	
