@@ -1,8 +1,8 @@
-chair - https://market.pmnd.rs/
 model & animation - https://www.mixamo.com/#/
-city - https://www.turbosquid.com/ko/3d-models/uvw-polygons-unity-3d-model-1294342
 
-logo 'J' - https://icons8.com/
+CittyMakerSuperPack: https://www.turbosquid.com/3d-models/cities-ready-pack-3d-model-1377391
+town_building: https://www.turbosquid.com/3d-models/3d-model-town-building-cartoon/1099605
+Low-poly cloud Free 3D print model: https://www.cgtrader.com/free-3d-print-models/hobby-diy/other/low-poly-cloud-bf24f598-03b3-4d94-9df0-9a8dba687922
 
 <<hexagon grid>>
 

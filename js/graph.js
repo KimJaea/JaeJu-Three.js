@@ -96,7 +96,7 @@ function loadModel() {
 	
 	// import data from server
     // 3 Dementional Data from 'EEG_Wiset_Web'
-    var dp = {{ value|tojson }};
+    var data = document.getElementById("eeg").innerText;
 	
     var data_eeg = data[0];
 	var data_raw = data[1];
