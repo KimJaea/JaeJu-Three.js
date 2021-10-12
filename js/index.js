@@ -64,7 +64,7 @@ function init() {
 	controls.enableZoom = true
 	controls.enableDamping = true
 	controls.minDistance = 10;
-	controls.maxDistance = 40;
+	controls.maxDistance = 20;
 	controls.target.set( 0, 5, 0 );
 	controls.update();
 
@@ -164,13 +164,13 @@ function loadModel() {
 
 	// Load Text above Building
 	// Up-Right
-	//loadTextEng("Send EEG", new THREE.Vector3(-25, 20, -75), -Math.PI / 4); 
+	loadTextEng("Send EEG", new THREE.Vector3(-10, 15, 20), 2); 
 	// Up-Left
-	//loadTextEng("Hospital", new THREE.Vector3(-75, 20, -65), Math.PI / 4); 
+	loadTextEng("Hospital", new THREE.Vector3(20, 15, 15), -2.3); 
 	// Down-Left
-	//loadTextEng("Record", new THREE.Vector3(-75, 20, -20), Math.PI / 4* 3); 
+	loadTextEng("Record", new THREE.Vector3(15, 15, -20), -0.5); 
 	// Down-Right
-	//loadTextEng("Contact", new THREE.Vector3(-15, 20, -25), -Math.PI / 4* 3); 
+	loadTextEng("Contact", new THREE.Vector3(-20, 15, -15), 0.5); 
 }
 
 function moveModel() {
@@ -228,26 +228,26 @@ function moveModel() {
 		model.rotation.y -= current_turnSpeed;
 	}
 
-	// // Up-Right // Send EEG
-	// if(model.position.x > -30 && model.position.z < -60) {
-	// 	keyReset(new THREE.Vector3(-31, 0, -59));
-	// 	loadPopUp("뇌파 측정", "/eeg");
-	// }
-	// // Up-Left // Hospital
-	// if(model.position.x < -60 && model.position.z < -60) {
-	// 	keyReset(new THREE.Vector3(-59, 0, -59));
-	// 	loadPopUp("병원 추천", "/map");
-	// }
-	// // Down-Left // Record
-	// if(model.position.x < -60 && model.position.z > -30) {
-	// 	keyReset(new THREE.Vector3(-59, 0, -31));
-	// 	loadPopUp("기록 확인", "/graph");
-	// }
-	// // Down-Right // Contact
-	// if(model.position.x > -30 && model.position.z > -30) {
-	// 	keyReset(new THREE.Vector3(-31, 0, -31));
-	// 	loadPopUp("개발자 Git Hub", "https://github.com/KimJaea/JaeJu-GetEEG");
-	// }
+	// Up-Right // Send EEG
+	if(model.position.x < -15 && model.position.z > 15) {
+		keyReset(new THREE.Vector3(-14, 0.4, 14));
+		loadPopUp("뇌파 측정", "/eeg");
+	}
+	// Up-Left // Hospital
+	if(model.position.x > 15 && model.position.z > 15) {
+		keyReset(new THREE.Vector3(14, 0.4, 14));
+		loadPopUp("병원 추천", "/map");
+	}
+	// Down-Left // Record
+	if(model.position.x > 15 && model.position.z < - 15) {
+		keyReset(new THREE.Vector3(14, 0.4, -14));
+		loadPopUp("기록 확인", "/graph");
+	}
+	// Down-Right // Contact
+	if(model.position.x < -15 && model.position.z < -15) {
+		keyReset(new THREE.Vector3(-14, 0.4, -14));
+		loadPopUp("개발자 Git Hub", "https://github.com/KimJaea/JaeJu-GetEEG");
+	}
 }
 
 function keyReset(location) {
