@@ -96,8 +96,8 @@ function loadModel() {
 	
 	// import data from server
     // 3 Dementional Data from 'EEG_Wiset_Web'
-    var data = document.getElementById("eeg").innerText;
-	
+	var data = document.getElementById("eeg").innerText;
+
     var data_eeg = data[0];
 	var data_raw = data[1];
     var data_chat = data[2];
@@ -228,12 +228,11 @@ function loadBarChart(values, items) {
 }
 
 function loadLineChart(values) {
-	const lineUnit = 0.5;
-	const pointUnit = 10;
+	const lineUnit = 0.6;
+	const pointUnit = 15;
 	const points = []; 
 	for(let i = 0; i < values.length; i++) {
-		points.push(new THREE.Vector3(-250 + lineUnit * i, values[i] * pointUnit, -400));
-		console.log(i)
+		points.push(new THREE.Vector3(-250 + lineUnit * i, values[i] * pointUnit, -390));
 	}
 	
 	const geometry = new THREE.BufferGeometry().setFromPoints( points );

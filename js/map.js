@@ -189,6 +189,37 @@ function currentLocation() {
         else {
 			console.log("에러가 발생했습니다.\n" + err.code);
         }
+		var geocoder = new google.maps.Geocoder;
+		var latlng = {
+			lat: parseFloat(37.65328520022786),
+			lng: parseFloat(127.01624493700905)
+		};
+		
+		geocoder.geocode({ location: latlng }).then((response) => {
+			var stringLoc = response.results[0].formatted_address
+    		var stringGu = stringLoc.split(' ')[2];
+
+			// Pop-Up Current Location Gu
+			for(let i = 0; i < locations.length; i++) {
+				if(stringGu == locations[i]) {
+					var object = objects[i];
+					object_selected = object;
+					object.scale.z *= 2;
+					object.position.add(new THREE.Vector3(0, 1, 0))
+					
+					var name = object.name;
+					for(let i = 0; i < objects.length; i++) {
+						if(name == objects[i].name) {
+							name = locations[i]
+						}
+					}
+					var loc = new THREE.Vector3(object.position.x - 65, 10, object.position.z - 50);
+					loadText(name, loc);
+			
+					getStatement(object.name);
+				}
+			}
+		});
 	}
 	
 }

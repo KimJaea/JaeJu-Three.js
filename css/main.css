@@ -28,7 +28,6 @@
  
  body {
 	 height: 90%;
-   overflow: hidden;
  }
  
  .logo {
@@ -133,9 +132,8 @@
  
  div.information {
 	 width: 27%;
-	 height: 2%;
+	 height: 100%;
 	 float: right;
-   overflow: scroll;
  }
  
  div.map-info-frame {
