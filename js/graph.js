@@ -100,7 +100,8 @@ function loadModel() {
 
     var data_eeg = data[0];
 	var data_raw = data[1];
-    var data_chat = data[2];
+    //var data_chat = data[2];
+	var data_chat = ['depression_confidence', 'depression_confidence', 'depression_confidence']
 
 	// Load Pie Chart & Text - Depression
 	var pieValues = [0, 0];
@@ -161,7 +162,6 @@ function loadModel() {
 	var symptomDespair_kr = ['절망감', '희망_없음', '포기', '고통', '실망',
 		'모욕', '나약', '절박']
 	var symptomSuicide_kr = ['자살충동']
-
 			
 	var symptomDepression_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var symptomSadness_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -239,7 +239,7 @@ function loadModel() {
         }
     }
 	
-	loadBarChart(symptomDepression_count, symptomDepression_kr);
+	loadBarChart(symptomDepression_count, symptomDepression_kr, new THREE.Vector3(350, -100, -200));
 }
 
 function loadPieChart(values, items) {
@@ -269,19 +269,19 @@ function loadPieChart(values, items) {
 	}
 }
 
-function loadBarChart(values, items) {
-	const barUnit = 20;
-	const barMulti = 50;
+function loadBarChart(values, items, location) {
+	const barUnit = 10;
+	const barMulti = 10;
 
 	for(let i = 0; i < values.length; i++) {
 		const geometry = new THREE.BoxGeometry( barUnit, values[i] * barMulti, barUnit );
 		const color = Math.random() * 0xbbbbbb + 0x444444;
 		const material = new THREE.MeshBasicMaterial( {color: color} );
 		const cube = new THREE.Mesh( geometry, material );
-		cube.position.set(400, values[i] * barMulti / 2 - 100,  barUnit*i);
+		cube.position.set(location.x, values[i] * barMulti / 2 + location.y,  barUnit*i);
 		scene.add( cube );
 
-		const pos = new THREE.Vector3(400, i * 25, -100);
+		const pos = new THREE.Vector3(location.x, i * 25 + location.y, location.z);
 		loadText(items[i], pos, -Math.PI / 2, color);
 	}
 	
