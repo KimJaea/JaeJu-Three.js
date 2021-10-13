@@ -4,7 +4,7 @@ import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/thre
 import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/stats.module.js'
 
 var container, stats, controls, clock;
-var camera, scene, renderer, geometry, text;
+var camera, scene, renderer, geometry, text, bar = [];
 var ratioWidth = 1.0, ratioHeight = 0.9;
 
 init();
@@ -238,7 +238,16 @@ function loadModel() {
         }
     }
 	
-	loadBarChart(symptomDepression_count, symptomDepression_kr, new THREE.Vector3(350, -100, -200));
+	var xPos1 = 300, xPos2 = -300, yPos = -250;
+	loadBarChart1(symptomDepression_count, symptomDepression_kr, new THREE.Vector3(xPos1, yPos, -250));
+	loadBarChart1(symptomSadness_count, symptomSadness_kr, new THREE.Vector3(xPos1, yPos, -100));
+	loadBarChart1(symptomLonely_count.concat(symptomAngry_count), symptomLonely_kr.concat(symptomAngry_kr), new THREE.Vector3(xPos1, yPos, 50));
+	loadBarChart1(symptomEmotionaldysregulation_count.concat(symptomLose_count), symptomEmotionaldysregulation_kr.concat(symptomLose_kr), new THREE.Vector3(xPos1, yPos, 200));
+
+	loadBarChart2(symptomNervous_count, symptomNervous_kr, new THREE.Vector3(xPos2, yPos, -250));
+	loadBarChart2(symptomFatigue_count.concat(symptomConfidence_count), symptomFatigue_kr.concat(symptomConfidence_kr), new THREE.Vector3(xPos2, yPos, -100));
+	loadBarChart2(symptomLowesteem_count, symptomLowesteem_kr, new THREE.Vector3(xPos2, yPos, 50));
+	loadBarChart2(symptomDespair_count.concat(symptomSuicide_count), symptomDespair_kr.concat(symptomSuicide_kr), new THREE.Vector3(xPos2, yPos, 200));
 }
 
 function loadPieChart(values, items) {
@@ -268,7 +277,7 @@ function loadPieChart(values, items) {
 	}
 }
 
-function loadBarChart(values, items, location) {
+function loadBarChart1(values, items, location) {
 	const barUnit = 10;
 	const barMulti = 10;
 
@@ -277,11 +286,28 @@ function loadBarChart(values, items, location) {
 		const color = Math.random() * 0xbbbbbb + 0x444444;
 		const material = new THREE.MeshBasicMaterial( {color: color} );
 		const cube = new THREE.Mesh( geometry, material );
-		cube.position.set(location.x, values[i] * barMulti / 2 + location.y,  barUnit*i);
+		cube.position.set(location.x, values[i] * barMulti / 2 + location.y,  barUnit*i + location.z);
 		scene.add( cube );
 
-		const pos = new THREE.Vector3(location.x, i * 25 + location.y, location.z);
+		const pos = new THREE.Vector3(location.x, i * 25 + location.y + 200, location.z);
 		loadText(items[i], pos, -Math.PI / 2, color);
+	}
+	
+}
+function loadBarChart2(values, items, location) {
+	const barUnit = 10;
+	const barMulti = 10;
+
+	for(let i = 0; i < values.length; i++) {
+		const geometry = new THREE.BoxGeometry( barUnit, values[i] * barMulti, barUnit );
+		const color = Math.random() * 0xdddddd + 0x000000;
+		const material = new THREE.MeshBasicMaterial( {color: color} );
+		const cube = new THREE.Mesh( geometry, material );
+		cube.position.set(location.x, values[i] * barMulti / 2 + location.y, location.z - barUnit*i);
+		scene.add( cube );
+
+		const pos = new THREE.Vector3(location.x, i * 25 + location.y + 200, location.z);
+		loadText(items[i], pos, Math.PI / 2, color);
 	}
 	
 }
