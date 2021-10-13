@@ -49,9 +49,6 @@ function init() {
 	loadModel();
 	loadText('선택하세요', new THREE.Vector3(-50, 50, 0));
 	
-	// Get Current Location
-	currentLocation();
-	
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 	renderer.setSize( window.innerWidth * ratioWidth, window.innerHeight * ratioHeight );
@@ -116,6 +113,9 @@ function loadModel() {
 		obj.children[0].children[0].material.color.set(0x349943) // Lighter
 		scene.add( obj );
 	})
+	
+	// Get Current Location
+	currentLocation();
 }
 
 function loadText(string_name, string_loc) {
@@ -143,10 +143,26 @@ function loadText(string_name, string_loc) {
 }
 
 function currentLocation() {
+	/*
 	if(navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(handleLocation, handleError); 
+
 	}
-	
+	*/
+
+	var getPosition = function (options) {
+		return new Promise(function (handleLocation, handleError) {
+			navigator.geolocation.getCurrentPosition(handleLocation, handleError, options);
+		})
+	}
+	getPosition()
+	.then((position) => {
+		handleLocation(position);
+	})
+	.catch((err) => {
+		handleError(err);
+	});
+
     function handleLocation(position)  {    
 		var geocoder = new google.maps.Geocoder;
 		var latlng = {
@@ -189,6 +205,7 @@ function currentLocation() {
         else {
 			console.log("에러가 발생했습니다.\n" + err.code);
         }
+		
 		var geocoder = new google.maps.Geocoder;
 		var latlng = {
 			lat: parseFloat(37.65328520022786),
