@@ -100,8 +100,7 @@ function loadModel() {
 
     var data_eeg = data[0];
 	var data_raw = data[1];
-    //var data_chat = data[2];
-	var data_chat = ['depression_confidence', 'depression_confidence', 'depression_confidence']
+    var data_chat = data[2];
 
 	// Load Pie Chart & Text - Depression
 	var pieValues = [0, 0];
