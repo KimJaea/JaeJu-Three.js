@@ -47,7 +47,7 @@ function init() {
 
 	// Load Models
 	loadModel();
-	loadText('선택하세요', new THREE.Vector3(-50, 50, 0));
+	// loadText('선택하세요', new THREE.Vector3(-50, 50, 0));
 	
 	// Set Renderer
 	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
@@ -149,19 +149,23 @@ function currentLocation() {
 
 	}
 	*/
-
-	var getPosition = function (options) {
-		return new Promise(function (handleLocation, handleError) {
-			navigator.geolocation.getCurrentPosition(handleLocation, handleError, options);
+	const _sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+	const timer = async () => {
+		await _sleep(2000);
+		var getPosition = function (options) {
+			return new Promise(function (handleLocation, handleError) {
+				navigator.geolocation.getCurrentPosition(handleLocation, handleError, options);
+			})
+		}
+		getPosition()
+		.then((position) => {
+			handleLocation(position);
 		})
-	}
-	getPosition()
-	.then((position) => {
-		handleLocation(position);
-	})
-	.catch((err) => {
-		handleError(err);
-	});
+		.catch((err) => {
+			handleError(err);
+		});
+	};
+	timer();
 
     function handleLocation(position)  {    
 		var geocoder = new google.maps.Geocoder;
@@ -177,11 +181,16 @@ function currentLocation() {
 			// Pop-Up Current Location Gu
 			for(let i = 0; i < locations.length; i++) {
 				if(stringGu == locations[i]) {
+					if(object_selected) {
+						if(object_selected == intersections[ 0 ].object.parent)
+							return;
+						object_selected.scale.setScalar(1)
+						object_selected.position.add(new THREE.Vector3(0, -1, 0))
+					}
 					var object = objects[i];
 					object_selected = object;
 					object.scale.z *= 2;
 					object.position.add(new THREE.Vector3(0, 1, 0))
-					
 					var name = object.name;
 					for(let i = 0; i < objects.length; i++) {
 						if(name == objects[i].name) {
@@ -190,7 +199,6 @@ function currentLocation() {
 					}
 					var loc = new THREE.Vector3(object.position.x - 65, 10, object.position.z - 50);
 					loadText(name, loc);
-			
 					getStatement(object.name);
 				}
 			}
@@ -205,38 +213,26 @@ function currentLocation() {
         else {
 			console.log("에러가 발생했습니다.\n" + err.code);
         }
-		
-		var geocoder = new google.maps.Geocoder;
-		var latlng = {
-			lat: parseFloat(37.65328520022786),
-			lng: parseFloat(127.01624493700905)
-		};
-		
-		geocoder.geocode({ location: latlng }).then((response) => {
-			var stringLoc = response.results[0].formatted_address
-    		var stringGu = stringLoc.split(' ')[2];
 
-			// Pop-Up Current Location Gu
-			for(let i = 0; i < locations.length; i++) {
-				if(stringGu == locations[i]) {
-					var object = objects[i];
-					object_selected = object;
-					object.scale.z *= 2;
-					object.position.add(new THREE.Vector3(0, 1, 0))
-					
-					var name = object.name;
-					for(let i = 0; i < objects.length; i++) {
-						if(name == objects[i].name) {
-							name = locations[i]
-						}
-					}
-					var loc = new THREE.Vector3(object.position.x - 65, 10, object.position.z - 50);
-					loadText(name, loc);
-			
-					getStatement(object.name);
-				}
+		if(object_selected) {
+			if(object_selected == intersections[ 0 ].object.parent)
+				return;
+            object_selected.scale.setScalar(1)
+            object_selected.position.add(new THREE.Vector3(0, -1, 0))
+        }
+		var object = objects[3];
+		object_selected = object;
+		object_selected.scale.z *= 2;
+		object.position.add(new THREE.Vector3(0, 1, 0))			
+		var name = object.name;
+		for(let i = 0; i < objects.length; i++) {
+			if(name == objects[i].name) {
+				name = locations[i]
 			}
-		});
+		}
+		var loc = new THREE.Vector3(object.position.x - 65, 10, object.position.z - 50);
+		loadText(name, loc);
+		getStatement(object.name);
 	}
 	
 }
