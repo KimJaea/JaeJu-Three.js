@@ -207,19 +207,36 @@ function moveModel() {
 		var direction = new THREE.Vector3()
 		model.getWorldDirection(direction);
 		direction.multiplyScalar(current_walkSpeed)
-		model.position.add(direction);
-		controls.target.add(direction);
-		camera.position.add(direction);
+
+		var x_value = model.position.x;
+		x_value += direction.x;
+		var z_value = model.position.z;
+		z_value += direction.z;
+		if(x_value < 65 && x_value > -65) {
+			if(z_value < 65 && z_value > -65) {
+				model.position.add(direction);
+				controls.target.add(direction);
+				camera.position.add(direction);
+			}
+		}
 	}
 	if(moveBackward) {
 		var direction = new THREE.Vector3()
 		model.getWorldDirection(direction);
-		
 		direction.multiplyScalar(current_walkSpeed)
 		direction.negate()
-		model.position.add(direction);
-		controls.target.add(direction);
-		camera.position.add(direction);	
+
+		var x_value = model.position.x;
+		x_value += direction.x;
+		var z_value = model.position.z;
+		z_value += direction.z;
+		if(x_value < 65 && x_value > -65) {
+			if(z_value < 65 && z_value > -65) {
+				model.position.add(direction);
+				controls.target.add(direction);
+				camera.position.add(direction);
+			}
+		}
 	}
 	if(turnLeft) {
 		model.rotation.y += current_turnSpeed;
@@ -228,24 +245,23 @@ function moveModel() {
 		model.rotation.y -= current_turnSpeed;
 	}
 
-	console.log(model.position)
 	// Up-Right // Send EEG
-	if(model.position.x < -15 && model.position.z > 15) {
+	if((model.position.x < -15 && model.position.x > -35) && (model.position.z > 15 && model.position.z < 35)) {
 		keyReset(new THREE.Vector3(-11, 0.4, 13));
 		loadPopUp("뇌파 측정", "/eeg");
 	}
 	// Up-Left // Hospital
-	if(model.position.x > 15 && model.position.z > 15) {
+	if((model.position.x > 15 && model.position.x < 35) && (model.position.z > 15 && model.position.z < 35)) {
 		keyReset(new THREE.Vector3(16, 0.4, 10));
 		loadPopUp("병원 추천", "/map");
 	}
 	// Down-Left // Record
-	if(model.position.x > 15 && model.position.z < - 15) {
+	if((model.position.x > 15 && model.position.x < 35) && (model.position.z < -15 && model.position.z > -35)) {
 		keyReset(new THREE.Vector3(10, 0.4, -13));
 		loadPopUp("기록 확인", "/graph");
 	}
 	// Down-Right // Contact
-	if(model.position.x < -15 && model.position.z < -15) {
+	if((model.position.x < -15 && model.position.x > -35) && (model.position.z < -15 && model.position.z > -35)) {
 		keyReset(new THREE.Vector3(-11, 0.4, -11));
 		loadPopUp("개발자 Git Hub", "https://github.com/KimJaea/JaeJu-GetEEG");
 	}
@@ -286,7 +302,7 @@ function onDocumentMouseDown(event) {
 	raycaster.setFromCamera( mouse, camera );
 	var intersections = raycaster.intersectObjects(objects, true);
 	if ( intersections.length > 0 ) {
-		// const object = intersections[ 0 ].object;
+		const object = intersections[ 0 ].object;
 		callChatBot();
 	}	
 }
