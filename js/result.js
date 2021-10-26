@@ -4,9 +4,9 @@ window.onload = function() {
     const element = document.getElementById('ann');
     if(dp[0] == '0') {
         var per = parseFloat(dp[1]) * 100;
-        element.innerHTML += String(per) + "%의 확률로 우울증이 아닙니다.";
+        element.innerHTML += String(per.toFixed(2)) + "%의 확률로 우울증이 아닙니다.";
     } else {
         var per = parseFloat(dp[1]) * 100;
-        element.innerHTML += String(per) + "%의 확률로 우울증입니다.";
+        element.innerHTML += String(per.toFixed(2)) + "%의 확률로 우울증입니다.";
     }
 }
