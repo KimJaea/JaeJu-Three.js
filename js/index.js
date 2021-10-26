@@ -185,20 +185,20 @@ function moveModel() {
 	var turnSpeed = Math.PI/45;
 	if(moveForward || moveBackward ) {
 		if(current_walkSpeed < walkSpeed) {
-			current_walkSpeed += walkSpeed * 0.01
+			current_walkSpeed += walkSpeed * 0.03
 		}
 	} else {
 		if(current_walkSpeed > 0) {
-			current_walkSpeed -= walkSpeed * 0.01
+			current_walkSpeed -= walkSpeed * 0.03
 		}
 	}
 	if(turnLeft || turnRight ) {
 		if(current_turnSpeed < turnSpeed) {
-			current_turnSpeed += turnSpeed * 0.01
+			current_turnSpeed += turnSpeed * 0.03
 		}
 	} else {
 		if(current_turnSpeed > 0) {
-			current_turnSpeed -= turnSpeed * 0.01
+			current_turnSpeed -= turnSpeed * 0.03
 		}
 	}
 	
