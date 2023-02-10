@@ -2,7 +2,7 @@
 Project JaeJu - Web Page using Three.js
 측정한 뇌파를 통한 웹 서비스 제공 페이지
 
-시연 영상: https://www.youtube.com/watch?v=mT7eV0OHHbc
+- 시연 영상: https://www.youtube.com/watch?v=mT7eV0OHHbc
 
 ![image](https://user-images.githubusercontent.com/57957086/199809989-272fa138-949d-40d7-bcad-010b29ad6dca.png)
 ![image](https://user-images.githubusercontent.com/57957086/199810959-2ff6727e-c5c3-4e4a-8846-1db691ef9285.png)
